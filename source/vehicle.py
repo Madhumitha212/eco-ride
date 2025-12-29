@@ -12,3 +12,13 @@ class Vehicle:
             self.__battery_percentage = battery_percentage
         else:
             print("Invalid battery percentage! Must be between 0 and 100:")
+
+class ElectricCar(Vehicle):
+    def __init__(self, vehicle_id, model, battery_percentage,seating_capacity):
+        super().__init__(vehicle_id, model, battery_percentage)
+        self.seating_capacity = seating_capacity
+
+class ElectricScooter(Vehicle):
+    def __init__(self, vehicle_id, model, battery_percentage,max_speed_limit):
+        super().__init__(vehicle_id, model, battery_percentage)
+        self.max_speed_limit = max_speed_limit
