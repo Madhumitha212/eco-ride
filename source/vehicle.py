@@ -14,7 +14,9 @@ class Vehicle(ABC):
             self.__battery_percentage = battery_percentage
         else:
             print("Invalid battery percentage! Must be between 0 and 100:")
-
+    def __eq__(self, other):
+        return isinstance(other, Vehicle) and self.vehicle_id == other.vehicle_id
+    
     @abstractmethod
     def calculate_trip_cost(self,distance):
         pass
@@ -42,3 +44,9 @@ class FleetManager:
     def add_hub(self, hub_name):
         if hub_name not in self.fleet_hubs:
             self.fleet_hubs[hub_name] = []
+
+    def add_vehicle_to_hub(self, hub_name, vehicle):
+        if any(v == vehicle for v in self.fleet_hubs.get(hub_name, [])):
+            return False
+        self.fleet_hubs[hub_name].append(vehicle)
+        return True
