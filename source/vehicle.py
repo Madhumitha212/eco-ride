@@ -1,4 +1,6 @@
-class Vehicle:
+from abc import ABC, abstractmethod
+
+class Vehicle(ABC):
     def __init__(self,vehicle_id, model,battery_percentage):
         self.vehicle_id = vehicle_id
         self.model = model
@@ -12,6 +14,10 @@ class Vehicle:
             self.__battery_percentage = battery_percentage
         else:
             print("Invalid battery percentage! Must be between 0 and 100:")
+
+    @abstractmethod
+    def calculate_trip_cost(self,distance):
+        pass
 
 class ElectricCar(Vehicle):
     def __init__(self, vehicle_id, model, battery_percentage,seating_capacity):
