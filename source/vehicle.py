@@ -24,8 +24,13 @@ class ElectricCar(Vehicle):
         super().__init__(vehicle_id, model, battery_percentage)
         self.seating_capacity = seating_capacity
 
+    def calculate_trip_cost(self, distance):
+        return 5.0 + (0.5 * distance)
+    
 class ElectricScooter(Vehicle):
     def __init__(self, vehicle_id, model, battery_percentage,max_speed_limit):
         super().__init__(vehicle_id, model, battery_percentage)
         self.max_speed_limit = max_speed_limit
 
+    def calculate_trip_cost(self, distance):
+        return 1.0 + (0.15 * distance)
