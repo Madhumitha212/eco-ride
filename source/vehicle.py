@@ -67,3 +67,9 @@ class FleetManager:
                     categories["Scooter"].append(v)
         return categories
     
+    def fleet_analytics(self):
+        summary = {"Available": 0, "On Trip": 0, "Under Maintenance": 0}
+        for vehicles in self.fleet_hubs.values():
+            for v in vehicles:
+                summary[v.status] += 1
+        return summary
