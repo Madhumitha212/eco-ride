@@ -50,3 +50,9 @@ class FleetManager:
             return False
         self.fleet_hubs[hub_name].append(vehicle)
         return True
+    
+    def search_by_hub(self, hub_name):
+        return self.fleet_hubs.get(hub_name, [])
+
+    def search_high_battery(self, threshold=80):
+        return [v for vehicles in self.fleet_hubs.values() for v in vehicles if v.get_battery_percentage() > threshold]
