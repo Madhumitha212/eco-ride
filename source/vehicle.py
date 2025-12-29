@@ -16,6 +16,8 @@ class Vehicle(ABC):
             print("Invalid battery percentage! Must be between 0 and 100:")
     def __eq__(self, other):
         return isinstance(other, Vehicle) and self.vehicle_id == other.vehicle_id
+    def __str__(self):
+        return f"{self.vehicle_id} | {self.model} | {self.get_battery_percentage()}% | {self.status}"
     
     @abstractmethod
     def calculate_trip_cost(self,distance):
@@ -73,3 +75,6 @@ class FleetManager:
             for v in vehicles:
                 summary[v.status] += 1
         return summary
+    
+    def sort_by_model(self, hub_name):
+        self.fleet_hubs[hub_name].sort(key=lambda v: v.model)
