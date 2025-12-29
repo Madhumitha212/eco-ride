@@ -78,3 +78,6 @@ class FleetManager:
     
     def sort_by_model(self, hub_name):
         self.fleet_hubs[hub_name].sort(key=lambda v: v.model)
+
+     def sort_by_battery(self, hub_name):
+        self.fleet_hubs[hub_name].sort(key=lambda v: v.get_battery_percentage(), reverse=True)
