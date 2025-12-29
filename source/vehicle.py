@@ -66,3 +66,4 @@ class FleetManager:
                 elif isinstance(v, ElectricScooter):
                     categories["Scooter"].append(v)
         return categories
+    
