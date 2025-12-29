@@ -56,3 +56,13 @@ class FleetManager:
 
     def search_high_battery(self, threshold=80):
         return [v for vehicles in self.fleet_hubs.values() for v in vehicles if v.get_battery_percentage() > threshold]
+    
+    def categorize_by_type(self):
+        categories = {"Car": [], "Scooter": []}
+        for vehicles in self.fleet_hubs.values():
+            for v in vehicles:
+                if isinstance(v, ElectricCar):
+                    categories["Car"].append(v)
+                elif isinstance(v, ElectricScooter):
+                    categories["Scooter"].append(v)
+        return categories
