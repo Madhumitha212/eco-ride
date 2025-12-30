@@ -114,13 +114,12 @@ class FleetManager:
                         max_speed_limit=80
                     )
 
-                vehicle.status = row["Status"]
                 self.fleet_hubs[hub].append(vehicle)
 
     def save_fleet_management_to_csv(self, filename="fleet_management.csv"):
         with open(filename, "w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(["Hub", "Vehicle ID", "Model", "Battery", "Status", "Type"])
+            writer.writerow(["Hub", "Vehicle ID", "Model", "Battery", "Type"])
             for hub, vehicles in self.fleet_hubs.items():
                 for v in vehicles:
                     writer.writerow([
@@ -128,6 +127,5 @@ class FleetManager:
                         v.vehicle_id,
                         v.model,
                         v.get_battery_percentage(),
-                        v.status,
                         type(v).__name__
                     ])
