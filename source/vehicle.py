@@ -83,10 +83,47 @@ class FleetManager:
     def sort_by_battery(self, hub_name):
         self.fleet_hubs[hub_name].sort(key=lambda v: v.get_battery_percentage(), reverse=True)
 
+    def load_from_csv(self, filename):
+        self.fleet_hubs = {}
+
+        with open(filename, "r") as file:
+            reader = csv.DictReader(file)
+            for row in reader:
+                hub = row["Hub"]
+
+                if hub not in self.fleet_hubs:
+                    self.fleet_hubs[hub] = []
+
+                if row["Type"] == "ElectricCar":
+                    vehicle = ElectricCar(
+                        row["Vehicle ID"],
+                        row["Model"],
+                        int(row["Battery"]),
+                        seating_capacity=4
+                    )
+                else:
+                    vehicle = ElectricScooter(
+                        row["Vehicle ID"],
+                        row["Model"],
+                        int(row["Battery"]),
+                        max_speed_limit=80
+                    )
+
+                vehicle.status = row["Status"]
+                self.fleet_hubs[hub].append(vehicle)
+
+
     def save_to_csv(self, filename):
         with open(filename, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(["Hub", "Vehicle ID", "Model", "Battery", "Status", "Type"])
             for hub, vehicles in self.fleet_hubs.items():
                 for v in vehicles:
-                    writer.writerow([hub, v.vehicle_id, v.model, v.get_battery_percentage(), v.status, type(v).__name__])
+                    writer.writerow([
+                        hub,
+                        v.vehicle_id,
+                        v.model,
+                        v.get_battery_percentage(),
+                        v.status,
+                        type(v).__name__
+                    ])
