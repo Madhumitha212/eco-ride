@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 import csv
 import os
+import json
 
 class Vehicle(ABC):
     def __init__(self,vehicle_id, model,battery_percentage):
@@ -129,6 +130,59 @@ class FleetManager:
                         v.get_battery_percentage(),
                         type(v).__name__
                     ])
-    
 
+    def load_fleet_management_from_json(self, filename="fleet_management.json"):
+        if not os.path.exists(filename):
+            print("JSON file not found. Starting with empty fleet.")
+            return
+
+        self.fleet_hubs = {}
+
+        with open(filename, "r") as file:
+            data = json.load(file)
+
+            for hub, vehicles in data.items():
+                self.fleet_hubs[hub] = []
+
+                for v in vehicles:
+                    if v["type"] == "ElectricCar":
+                        vehicle = ElectricCar(
+                            v["vehicle_id"],
+                            v["model"],
+                            v["battery_percentage"],
+                            v["seating_capacity"]
+                        )
+                    elif v["type"] == "ElectricScooter":
+                        vehicle = ElectricScooter(
+                            v["vehicle_id"],
+                            v["model"],
+                            v["battery_percentage"],
+                            v["max_speed_limit"]
+                        )
+
+                    self.fleet_hubs[hub].append(vehicle)
     
+    def save_fleet_management_to_json(self, filename="fleet_management.json"):
+        data = {}
+
+        for hub, vehicles in self.fleet_hubs.items():
+            data[hub] = []
+            for v in vehicles:
+                vehicle_data = {
+                    "type": type(v).__name__,
+                    "vehicle_id": v.vehicle_id,
+                    "model": v.model,
+                    "battery_percentage": v.get_battery_percentage()
+                }
+
+                # Serialize subclass-specific fields
+                if isinstance(v, ElectricCar):
+                    vehicle_data["seating_capacity"] = v.seating_capacity
+                elif isinstance(v, ElectricScooter):
+                    vehicle_data["max_speed_limit"] = v.max_speed_limit
+
+                data[hub].append(vehicle_data)
+
+        with open(filename, "w") as file:
+            json.dump(data, file, indent=4)
+            

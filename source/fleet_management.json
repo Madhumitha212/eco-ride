@@ -1,0 +1,11 @@
+{
+    "Downtown": [
+        {
+            "type": "ElectricCar",
+            "vehicle_id": "EC701",
+            "model": "Tesla Model 3",
+            "battery_percentage": 90,
+            "seating_capacity": 5
+        }
+    ]
+}
