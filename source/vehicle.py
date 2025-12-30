@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import csv
+import os
 
 class Vehicle(ABC):
     def __init__(self,vehicle_id, model,battery_percentage):
@@ -83,7 +84,11 @@ class FleetManager:
     def sort_by_battery(self, hub_name):
         self.fleet_hubs[hub_name].sort(key=lambda v: v.get_battery_percentage(), reverse=True)
 
-    def load_from_csv(self, filename):
+    def load_fleet_management_from_csv(self, filename="fleet_management.csv"):
+        if not os.path.exists(filename):
+            print("CSV not found. Starting with empty fleet.")
+            return
+
         self.fleet_hubs = {}
 
         with open(filename, "r") as file:
@@ -112,8 +117,7 @@ class FleetManager:
                 vehicle.status = row["Status"]
                 self.fleet_hubs[hub].append(vehicle)
 
-
-    def save_to_csv(self, filename):
+    def save_fleet_management_to_csv(self, filename="fleet_management.csv"):
         with open(filename, "w", newline="") as file:
             writer = csv.writer(file)
             writer.writerow(["Hub", "Vehicle ID", "Model", "Battery", "Status", "Type"])
