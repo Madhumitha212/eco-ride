@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import csv
 
 class Vehicle(ABC):
     def __init__(self,vehicle_id, model,battery_percentage):
@@ -81,3 +82,11 @@ class FleetManager:
 
     def sort_by_battery(self, hub_name):
         self.fleet_hubs[hub_name].sort(key=lambda v: v.get_battery_percentage(), reverse=True)
+
+    def save_to_csv(self, filename):
+        with open(filename, "w", newline="") as file:
+            writer = csv.writer(file)
+            writer.writerow(["Hub", "Vehicle ID", "Model", "Battery", "Status", "Type"])
+            for hub, vehicles in self.fleet_hubs.items():
+                for v in vehicles:
+                    writer.writerow([hub, v.vehicle_id, v.model, v.get_battery_percentage(), v.status, type(v).__name__])
