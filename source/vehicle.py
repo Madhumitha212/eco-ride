@@ -129,3 +129,6 @@ class FleetManager:
                         v.get_battery_percentage(),
                         type(v).__name__
                     ])
+    
+
+    
