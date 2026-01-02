@@ -7,8 +7,8 @@ class Vehicle(ABC):
     def __init__(self,vehicle_id, model,battery_percentage):
         self.vehicle_id = vehicle_id
         self.model = model
-        self.battery_percentage = battery_percentage
-        self.set_battery_percentage(battery_percentage)
+        self.__battery_percentage = battery_percentage
+        self.status = "Available"
 
     def get_battery_percentage(self):
         return self.__battery_percentage
